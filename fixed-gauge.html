@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <style type="text/css">
+        
+        div, svg {
+        
+            border: 1px solid black;
+        }
+        
+        
+    </style>
+    
+    </head>
+<body>
+
+    
+<div id="gaugeContainer" height="400" width="400"></div>
+    
+    
+<script type="text/javascript">
+
+document.onreadystatechange = function(){
+    
+    
+if (document.readyState == "interactive") {
+//Create the namespace to begin with
+    
+//SVGENIUS... the beginning of something beautiful.
+var SVGENIUS = SVGENIUS || {};
+SVGENIUS.charts = {
+    gauge: function(){
+        
+        var height = 300;
+        var width = 210;
+        
+        var gaugeContainer = document.getElementById('gaugeContainer');
+        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute('xmlns:svg',"http://www.w3.org/2000/svg");
+        svg.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+        svg.setAttribute('height', height);
+        svg.setAttribute('width', width);
+        
+        //Grey outline of the gauge
+        var outline = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        outline.setAttribute('d', 'M100 110 v -10 A1,1 0 0 1 100 300 v-10 A1,1 0 0 0 100 110 Z');
+        outline.setAttribute('fill', 'white');
+        outline.setAttribute('stroke', 'grey');
+        outline.setAttribute('stroke-width', '1');
+                
+        //Marker at halfway point
+        var halfwayMarker = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        halfwayMarker.setAttribute('d', 'M200 200 h 10 Z');
+        halfwayMarker.setAttribute('stroke', 'black');
+        halfwayMarker.setAttribute('stroke-width', '1');
+        
+        var overlay = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        overlay.setAttribute('d', 'M200 200 l-10,0 A100,100 0 0  0 163.63,136.4  L170.7,129.3 A100,100 0 0 1 200,200');
+        overlay.setAttribute('fill', 'green');
+        overlay.setAttribute('stroke-width', '0');
+        
+        //Add the things to the page
+        gaugeContainer.appendChild(svg);
+        
+        svg.addEventListener('SVGLoad', function(evt) {
+                console.log('SVG onload called');
+                
+        });
+        //var svg = document.getElementsByTagName('svg')[0];
+        svg.appendChild(outline);
+                svg.appendChild(halfwayMarker);
+                svg.appendChild(overlay);
+    }
+}
+
+    SVGENIUS.charts.gauge({
+        text: "50%<br/>Ahead", //Not yet used
+        
+        
+    });
+}
+}
+console.log("Inner arc top. y offset = -" + 100* Math.sin(Math.PI / 4));
+console.log("Inner arc top. x offset = -" + 100* Math.cos(Math.PI / 4));
+
+console.log("Outer arc top. y offset = -" + 90* Math.sin(Math.PI / 4));
+console.log("Outer arc top. x offset = -" + 90* Math.cos(Math.PI / 4));
+console.log("-----------------");
+</script>
+</body>
+</html>
