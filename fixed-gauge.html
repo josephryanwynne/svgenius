@@ -31,8 +31,8 @@ var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
     gauge: function(){
         
-        var height = 300;
-        var width = 210;
+        var height = 200; // Probably need to work out how much space we have dynamically. Get dimensions of containing div?
+        var width = 210; // Same for this value
         
         var gaugeContainer = document.getElementById('gaugeContainer');
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -41,21 +41,40 @@ SVGENIUS.charts = {
         svg.setAttribute('height', height);
         svg.setAttribute('width', width);
         
-        //Grey outline of the gauge
+        
+        var gaugeWidth = 10;
+        var radius = 100; // This should be based on how much space we have. Something like height / 2 ??
+        var startX = 100;
+        var startY = gaugeWidth;
+        
+        var endX = startX;
+        var endY = startY + (2*radius);
+        
+        //Grey outline of the gauge - draw vertical line up, outer arc, up, inner arc.
         var outline = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        outline.setAttribute('d', 'M100 110 v -10 A1,1 0 0 1 100 300 v-10 A1,1 0 0 0 100 110 Z');
+        outline.setAttribute('d', 'M'+startX+','+startY+' v-' + 10 + ' A1,1 0 0 1 '+startX+' '+200+' v-'+gaugeWidth+' A1,1 0 0 0 '+startX+','+startY+' Z');
         outline.setAttribute('fill', 'white');
         outline.setAttribute('stroke', 'grey');
         outline.setAttribute('stroke-width', '1');
                 
+        var halfwayPoint = (startX+radius)+','+radius;// Not sure what this 200 number should be calculated from
         //Marker at halfway point
         var halfwayMarker = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        halfwayMarker.setAttribute('d', 'M200 200 h 10 Z');
+        halfwayMarker.setAttribute('d', 'M'+halfwayPoint+' h 10 Z');
         halfwayMarker.setAttribute('stroke', 'black');
         halfwayMarker.setAttribute('stroke-width', '1');
         
+        var percentageDifference = 50; // Exactly halfway in the top section -- same as in testing
+        
+        var angle = Math.PI / (200 / percentageDifference);
+        var outerArcYOffset = radius * Math.sin(angle);
+        var outerArcXOffset = radius * Math.cos(angle);
+        var innerArcYOffset = (radius - gaugeWidth) * Math.sin(angle);
+        var innerArcXOffset = (radius - gaugeWidth) * Math.cos(angle);
+        
+        
         var overlay = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        overlay.setAttribute('d', 'M200 200 l-10,0 A100,100 0 0  0 163.63,136.4  L170.7,129.3 A100,100 0 0 1 200,200');
+        overlay.setAttribute('d', 'M'+halfwayPoint+' l-10,0 A'+radius+','+radius+' 0 0  0 163.63,36.4  L170.7,29.3 A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
         overlay.setAttribute('fill', 'green');
         overlay.setAttribute('stroke-width', '0');
         
@@ -68,11 +87,12 @@ SVGENIUS.charts = {
         });
         //var svg = document.getElementsByTagName('svg')[0];
         svg.appendChild(outline);
-                svg.appendChild(halfwayMarker);
-                svg.appendChild(overlay);
+        svg.appendChild(halfwayMarker);
+        svg.appendChild(overlay);
     }
 }
-
+    
+    //Configuration for the chart
     SVGENIUS.charts.gauge({
         text: "50%<br/>Ahead", //Not yet used
         
@@ -80,12 +100,7 @@ SVGENIUS.charts = {
     });
 }
 }
-console.log("Inner arc top. y offset = -" + 100* Math.sin(Math.PI / 4));
-console.log("Inner arc top. x offset = -" + 100* Math.cos(Math.PI / 4));
 
-console.log("Outer arc top. y offset = -" + 90* Math.sin(Math.PI / 4));
-console.log("Outer arc top. x offset = -" + 90* Math.cos(Math.PI / 4));
-console.log("-----------------");
 </script>
 </body>
 </html>
