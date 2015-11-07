@@ -54,7 +54,7 @@ SVGENIUS.charts = {
         svg.setAttribute('width', width);
         
         
-        var gaugeWidth = 25; //Arbitrary... Maybe it could be configurable
+        var gaugeWidth = height/15; //Arbitrary... Maybe it could be configurable
         var radius = height / 2.0 - 5; // This should be based on how much space we have. Something like height / 2 ?? take something off to avoid overlap
         var innerRadius = radius - gaugeWidth;
         
