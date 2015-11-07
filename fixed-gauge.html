@@ -13,7 +13,15 @@
     
     </head>
 <body>
+<!--
 
+TODO
+====
+
+* Issues with stroke lines at top and bottom of the image. It should probably always start at 1px in, or use radius which is 1px less than half of the available space
+* When doing the above, the overlay is no longer correctly positioned. WHY THE FUCK NOT.
+
+-->
     
 <div id="gaugeContainer" height="400" width="400"></div>
     
@@ -31,8 +39,8 @@ var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
     gauge: function(){
         
-        var height = 200; // Probably need to work out how much space we have dynamically. Get dimensions of containing div?
-        var width = 210; // Same for this value
+        var height = 250; // Probably need to work out how much space we have dynamically. Get dimensions of containing div?
+        var width = 260; // Same for this value
         
         var gaugeContainer = document.getElementById('gaugeContainer');
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -42,9 +50,9 @@ SVGENIUS.charts = {
         svg.setAttribute('width', width);
         
         
-        var gaugeWidth = 10;
-        var radius = 100; // This should be based on how much space we have. Something like height / 2 ??
-        var startX = 100;
+        var gaugeWidth = 10; //Arbitrary... Maybe it could be configurable
+        var radius = height / 2 - 1; // This should be based on how much space we have. Something like height / 2 ??
+        var startX = radius;
         var startY = gaugeWidth;
         
         var endX = startX;
@@ -52,7 +60,7 @@ SVGENIUS.charts = {
         
         //Grey outline of the gauge - draw vertical line up, outer arc, up, inner arc.
         var outline = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        outline.setAttribute('d', 'M'+startX+','+startY+' v-' + 10 + ' A1,1 0 0 1 '+startX+' '+200+' v-'+gaugeWidth+' A1,1 0 0 0 '+startX+','+startY+' Z');
+        outline.setAttribute('d', 'M'+startX+','+startY+' v-' + 10 + ' A1,1 0 0 1 '+startX+' '+(2*radius)+' v-'+gaugeWidth+' A1,1 0 0 0 '+startX+','+startY+' Z');
         outline.setAttribute('fill', 'white');
         outline.setAttribute('stroke', 'grey');
         outline.setAttribute('stroke-width', '1');
@@ -74,7 +82,7 @@ SVGENIUS.charts = {
         
         
         var overlay = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        overlay.setAttribute('d', 'M'+halfwayPoint+' l-10,0 A'+radius+','+radius+' 0 0  0 163.63,36.4  L170.7,29.3 A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
+        overlay.setAttribute('d', 'M'+halfwayPoint+' l-'+gaugeWidth+',0 A'+radius+','+radius+' 0 0  0 '+(radius+innerArcXOffset)+','+(radius-innerArcYOffset)+'  L'+(radius+outerArcXOffset)+','+(radius-outerArcYOffset)+' A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
         overlay.setAttribute('fill', 'green');
         overlay.setAttribute('stroke-width', '0');
         
