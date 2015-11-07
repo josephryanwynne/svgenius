@@ -3,12 +3,10 @@
     <head>
     <style type="text/css">
         
-/*
         div, svg {
         
             border: 1px solid black;
         }
-*/
         
         
     </style>
@@ -60,6 +58,8 @@ SVGENIUS.charts = {
         var gaugeWidth = 25; //Arbitrary... Maybe it could be configurable
         var radius = height / 2.0 - 5; // This should be based on how much space we have. Something like height / 2 ?? take something off to avoid overlap
         var innerRadius = radius - gaugeWidth;
+        
+        console.log('innerRadius[' + innerRadius + '] outerRadius['+radius+']');
         var startX = radius;
         var startY = gaugeWidth+1; //This is a bad idea. Use a cental point as a starting point instead? 
         
@@ -73,6 +73,8 @@ SVGENIUS.charts = {
         var halfwayPoint = (startX+radius-(strokeWidth/2))+','+(radius+1); // Check that this is correct
         var percentageDifference = conf.percentageDifference; // Exactly halfway in the top section -- same as in testing
         
+        console.log('halfwayPoint['+halfwayPoint+']');
+        
         var halfwayMarker = document.createElementNS("http://www.w3.org/2000/svg", "path");
         halfwayMarker.setAttribute('d', 'M'+halfwayPoint+' h 10 h -'+(gaugeWidth+10+10)+' Z');
         halfwayMarker.setAttribute('stroke', 'grey');
@@ -84,14 +86,19 @@ SVGENIUS.charts = {
         var innerArcYOffset = (radius - gaugeWidth) * Math.sin(angle);
         var innerArcXOffset = (radius - gaugeWidth) * Math.cos(angle);
         
+        console.log('offsets ['+innerArcXOffset+','+innerArcYOffset+'] ['+outerArcXOffset+','+outerArcYOffset+']');
+        
+        var innerArcFlag = percentageDifference > 0 ? 0 : 1;
+        var outerArcFlag = percentageDifference > 0 ? 1 : 0;
+        var correction = percentageDifference > 0 ? 1 : 0;
+        
         var overlay = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        overlay.setAttribute('d', 'M'+halfwayPoint+' l-'+(gaugeWidth)+',0 A'+innerRadius+','+innerRadius+' 0 0  0 '+(radius+innerArcXOffset)+','+(radius-innerArcYOffset+1)+'  L'+(radius+outerArcXOffset)+','+(radius-outerArcYOffset+1)+' A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
-        overlay.setAttribute('fill', (percentageDifference>conf.threshold?'red':'green'));
+        overlay.setAttribute('d', 'M'+halfwayPoint+' l-'+(gaugeWidth)+',0 A'+innerRadius+','+innerRadius+' 0 0 '+innerArcFlag+' '+(radius+innerArcXOffset)+','+(radius-innerArcYOffset+correction)+'  L'+(radius+outerArcXOffset)+','+(radius-outerArcYOffset+correction)+' A'+radius+','+radius+' 0 0 '+outerArcFlag+' '+halfwayPoint);
+        overlay.setAttribute('fill', (Math.abs(percentageDifference)>conf.threshold?'red':'green'));
         overlay.setAttribute('stroke-width', '0');
         
         //Add the things to the page
         gaugeContainer.appendChild(svg);
-        
         
         svg.appendChild(overlay);
         svg.appendChild(outline);
@@ -103,7 +110,7 @@ SVGENIUS.charts = {
     SVGENIUS.charts.gauge({
         targetContainerId: "gaugeContainer1",
         text: "50%<br/>Ahead", //Not yet used
-        percentageDifference: 98,
+        percentageDifference: 1,
         threshold: 10
     });
     
@@ -111,7 +118,7 @@ SVGENIUS.charts = {
     SVGENIUS.charts.gauge({
         targetContainerId: "gaugeContainer2",
         text: "50%<br/>Ahead", //Not yet used
-        percentageDifference: 9,
+        percentageDifference: -98,
         threshold: 10
     });
     
@@ -125,6 +132,8 @@ SVGENIUS.charts = {
 }
 
 </script>
-    
+    SOH
+    CAH
+    TOA
 </body>
 </html>
