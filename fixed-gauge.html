@@ -3,10 +3,12 @@
     <head>
     <style type="text/css">
         
+/*
         div, svg {
         
             border: 1px solid black;
         }
+*/
         
         
     </style>
@@ -23,8 +25,9 @@ TODO
 
 -->
     
-<div id="gaugeContainer" height="400" width="400"></div>
-    
+<div id="gaugeContainer1" height="200" width="200"></div>
+<div id="gaugeContainer2" height="400" width="400"></div>
+<div id="gaugeContainer3" height="600" width="600"></div>
     
 <script type="text/javascript">
 
@@ -37,12 +40,16 @@ if (document.readyState == "interactive") {
 //SVGENIUS... the beginning of something beautiful.
 var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
-    gauge: function(){
+    gauge: function(conf){
         
-        var height = 250; // Probably need to work out how much space we have dynamically. Get dimensions of containing div?
-        var width = 260; // Same for this value
+        var gaugeContainer = document.getElementById(conf.targetContainerId);
         
-        var gaugeContainer = document.getElementById('gaugeContainer');
+        var height = gaugeContainer.getAttribute("height"); // Probably need to work out how much space we have dynamically. Get dimensions of containing div?
+        var width = gaugeContainer.getAttribute("width"); // Same for this value
+        
+        console.log(height + " " + width);
+        var strokeWidth = 1;
+        
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute('xmlns:svg',"http://www.w3.org/2000/svg");
         svg.setAttribute('xmlns', "http://www.w3.org/2000/svg");
@@ -50,29 +57,26 @@ SVGENIUS.charts = {
         svg.setAttribute('width', width);
         
         
-        var gaugeWidth = 10; //Arbitrary... Maybe it could be configurable
-        var radius = height / 2 - 1; // This should be based on how much space we have. Something like height / 2 ??
+        var gaugeWidth = 25; //Arbitrary... Maybe it could be configurable
+        var radius = height / 2.0 - 5; // This should be based on how much space we have. Something like height / 2 ?? take something off to avoid overlap
+        var innerRadius = radius - gaugeWidth;
         var startX = radius;
-        var startY = gaugeWidth;
-        
-        var endX = startX;
-        var endY = startY + (2*radius);
+        var startY = gaugeWidth+1; //This is a bad idea. Use a cental point as a starting point instead? 
         
         //Grey outline of the gauge - draw vertical line up, outer arc, up, inner arc.
         var outline = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        outline.setAttribute('d', 'M'+startX+','+startY+' v-' + 10 + ' A1,1 0 0 1 '+startX+' '+(2*radius)+' v-'+gaugeWidth+' A1,1 0 0 0 '+startX+','+startY+' Z');
-        outline.setAttribute('fill', 'white');
+        outline.setAttribute('d', 'M'+startX+','+startY+' v-' + gaugeWidth + ' A1,1 0 0 1 '+startX+' '+(2*radius)+' v-'+gaugeWidth+' A1,1 0 0 0 '+startX+','+startY+' Z');
+        outline.setAttribute('fill', 'none');
         outline.setAttribute('stroke', 'grey');
         outline.setAttribute('stroke-width', '1');
                 
-        var halfwayPoint = (startX+radius)+','+radius;// Not sure what this 200 number should be calculated from
-        //Marker at halfway point
-        var halfwayMarker = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        halfwayMarker.setAttribute('d', 'M'+halfwayPoint+' h 10 Z');
-        halfwayMarker.setAttribute('stroke', 'black');
-        halfwayMarker.setAttribute('stroke-width', '1');
+        var halfwayPoint = (startX+radius-(strokeWidth/2))+','+(radius+1); // Check that this is correct
+        var percentageDifference = conf.percentageDifference; // Exactly halfway in the top section -- same as in testing
         
-        var percentageDifference = 50; // Exactly halfway in the top section -- same as in testing
+        var halfwayMarker = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        halfwayMarker.setAttribute('d', 'M'+halfwayPoint+' h 10 h -'+(gaugeWidth+10+10)+' Z');
+        halfwayMarker.setAttribute('stroke', 'grey');
+        halfwayMarker.setAttribute('stroke-width', '1');
         
         var angle = Math.PI / (200 / percentageDifference);
         var outerArcYOffset = radius * Math.sin(angle);
@@ -80,35 +84,47 @@ SVGENIUS.charts = {
         var innerArcYOffset = (radius - gaugeWidth) * Math.sin(angle);
         var innerArcXOffset = (radius - gaugeWidth) * Math.cos(angle);
         
-        
         var overlay = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        overlay.setAttribute('d', 'M'+halfwayPoint+' l-'+gaugeWidth+',0 A'+radius+','+radius+' 0 0  0 '+(radius+innerArcXOffset)+','+(radius-innerArcYOffset)+'  L'+(radius+outerArcXOffset)+','+(radius-outerArcYOffset)+' A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
-        overlay.setAttribute('fill', 'green');
+        overlay.setAttribute('d', 'M'+halfwayPoint+' l-'+(gaugeWidth)+',0 A'+innerRadius+','+innerRadius+' 0 0  0 '+(radius+innerArcXOffset)+','+(radius-innerArcYOffset+1)+'  L'+(radius+outerArcXOffset)+','+(radius-outerArcYOffset+1)+' A'+radius+','+radius+' 0 0 1 '+halfwayPoint);
+        overlay.setAttribute('fill', (percentageDifference>conf.threshold?'red':'green'));
         overlay.setAttribute('stroke-width', '0');
         
         //Add the things to the page
         gaugeContainer.appendChild(svg);
         
-        svg.addEventListener('SVGLoad', function(evt) {
-                console.log('SVG onload called');
-                
-        });
-        //var svg = document.getElementsByTagName('svg')[0];
+        
+        svg.appendChild(overlay);
         svg.appendChild(outline);
         svg.appendChild(halfwayMarker);
-        svg.appendChild(overlay);
     }
 }
     
     //Configuration for the chart
     SVGENIUS.charts.gauge({
+        targetContainerId: "gaugeContainer1",
         text: "50%<br/>Ahead", //Not yet used
-        
-        
+        percentageDifference: 98,
+        threshold: 10
+    });
+    
+    //Configuration for the chart
+    SVGENIUS.charts.gauge({
+        targetContainerId: "gaugeContainer2",
+        text: "50%<br/>Ahead", //Not yet used
+        percentageDifference: 9,
+        threshold: 10
+    });
+    
+    SVGENIUS.charts.gauge({
+        targetContainerId: "gaugeContainer3",
+        text: "50%<br/>Ahead", //Not yet used
+        percentageDifference: -60,
+        threshold: 10
     });
 }
 }
 
 </script>
+    
 </body>
 </html>
