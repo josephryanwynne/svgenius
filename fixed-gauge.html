@@ -14,13 +14,11 @@
     </head>
 <body>
 <!--
-
 TODO
 ====
 
-* Issues with stroke lines at top and bottom of the image. It should probably always start at 1px in, or use radius which is 1px less than half of the available space
-* When doing the above, the overlay is no longer correctly positioned. WHY THE FUCK NOT.
-
+* Add labels: Chart Title, Chart Major, Chart Minor.
+* When the value exceeds 100 or is below -100 the arc doesn't render correctly, but does that matter if it's designed to stop at top and bottom?
 -->
     
 <div id="gaugeContainer1" height="200" width="200"></div>
@@ -38,6 +36,7 @@ if (document.readyState == "interactive") {
 //SVGENIUS... the beginning of something beautiful.
 var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
+    
     gauge: function(conf){
         
         var gaugeContainer = document.getElementById(conf.targetContainerId);
@@ -72,6 +71,12 @@ SVGENIUS.charts = {
                 
         var halfwayPoint = (startX+radius-(strokeWidth/2))+','+(radius+1); // Check that this is correct
         var percentageDifference = conf.percentageDifference; // Exactly halfway in the top section -- same as in testing
+        
+        if(percentageDifference > 100){
+            percentageDifference = 100;
+        } else if (percentageDifference < -100){
+            percentageDifference = -100;
+        }
         
         console.log('halfwayPoint['+halfwayPoint+']');
         
@@ -118,7 +123,7 @@ SVGENIUS.charts = {
     SVGENIUS.charts.gauge({
         targetContainerId: "gaugeContainer2",
         text: "50%<br/>Ahead", //Not yet used
-        percentageDifference: -98,
+        percentageDifference: 100,
         threshold: 10
     });
     
