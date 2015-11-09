@@ -16,7 +16,7 @@ Currently the only functionality is to produce a gauge chart displaying distance
 &lt;html&gt;
 	&lt;body&gt;
 		&lt;div id="sampleGaugeContainer" height="400" width="400" /&gt;
-		&lt;script type="text/javascript" src="svgenius.js" &gt;&t/script&gt;
+		&lt;script type="text/javascript" src="svgenius.js" &gt;&lt;/script&gt;
 		&lt;script type="text/javascript"&gt;
 				//Configuration for the chart
 		        SVGENIUS.charts.gauge({
