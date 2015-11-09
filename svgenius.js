@@ -29,7 +29,7 @@ SVGENIUS.charts = {
     },
     svgText: function(xPos,yPos,textSize,text,color){
         var newSvgTextElement = this.newSvgElement('text');
-        newSvgTextElement.setAttribute('alignment-baseline', 'middle');
+        newSvgTextElement.setAttribute('dominant-baseline', 'middle');
         newSvgTextElement.setAttribute('x', xPos);
         newSvgTextElement.setAttribute('y', yPos);
         newSvgTextElement.setAttribute('font-size', textSize);
@@ -41,6 +41,7 @@ SVGENIUS.charts = {
     },
     gauge: function(conf){
         
+        var percentageDifference = conf.percentageDifference;
         var gaugeContainer = document.getElementById(conf.targetContainerId);
         
         //This is probably not the right way to ascertain the dimensions as it only works for html attributes
@@ -58,6 +59,7 @@ SVGENIUS.charts = {
         var halfwayX = (startX+radius-(strokeWidth/2));
         var halfwayY = (radius+1);
         var halfwayPoint = halfwayX+','+halfwayY; // Check that this is correct
+        var labelFont = conf.labelFont;
         
         //Grey outline of the gauge - draw vertical line up, outer arc, up, inner arc.
         var outline = this.newSvgElement("path");
@@ -84,8 +86,37 @@ SVGENIUS.charts = {
         var negativeText = this.svgText(negativeTextPositionX, negativeTextPositionY, textSize, '&ndash;', 'red');
         var zeroText = this.svgText(halfwayX + gaugeWidth, halfwayY, textSize, '0', 'green');
         
+        //TODO : CLEAN ME
+        if(conf.showValueAsLabel == 'true'){
+            var chartMajorText = conf.percentageDifference;
+            var labelText = this.newSvgElement('text');
+            labelText.setAttribute('alignment-baseline', 'middle');
+            labelText.setAttribute('text-anchor', 'middle');
+            labelText.setAttribute('x', startX);
+            labelText.setAttribute('y', halfwayY);
+            var majorLabel = this.newSvgElement('tspan');
+            majorLabel.setAttribute('font-size', radius / 3); //Arbitrary
+            majorLabel.setAttribute('font-weight', 'bold');
+            majorLabel.setAttribute('fill', 'black');
+            majorLabel.innerHTML = chartMajorText + '%';
+            majorLabel.setAttribute('font-family', 'Arial');
+
+            var minorLabelText = percentageDifference >= 0 ? 'Ahead by' : 'Behind by';
+            var minorLabel = this.newSvgElement('tspan');
+            minorLabel.setAttribute('font-size', radius / 7); // Arbitrary
+            minorLabel.setAttribute('text-anchor', 'middle');
+            minorLabel.setAttribute('fill', 'black');
+            minorLabel.setAttribute('dy', '1.1em');
+            minorLabel.setAttribute('x', startX);
+            minorLabel.innerHTML = minorLabelText;
+            minorLabel.setAttribute('font-family', 'Arial');
+            
+            labelText.appendChild(majorLabel);
+            labelText.appendChild(minorLabel);
+            svg.appendChild(labelText);
+        }
         
-        var percentageDifference = conf.percentageDifference; // Exactly halfway in the top section -- same as in testing
+        
         
         //Prevent overflow if user passes numbers outside of accepted range
         if(percentageDifference > 100){
@@ -119,12 +150,14 @@ SVGENIUS.charts = {
         
         //Add the things to the page to create beautiful gauge
         gaugeContainer.appendChild(svg);
-        svg.appendChild(positiveText);
-        svg.appendChild(negativeText);
+        //Draw the gauge
         svg.appendChild(base);
         svg.appendChild(overlay);
         svg.appendChild(outline);
         svg.appendChild(halfwayMarker);
+        //Draw the labels
+        svg.appendChild(positiveText);
+        svg.appendChild(negativeText);
         svg.appendChild(zeroText);
     }
 }

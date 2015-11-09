@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <style type="text/css">svg{background:lightgrey;}</style>
+    <style type="text/css">svg{background:#eeeeee;}</style>
 <div id="gaugeContainer1" height="200" width="200"></div>
 <div id="gaugeContainer2" height="400" width="400"></div>
 <div id="gaugeContainer3" height="600" width="600"></div>
@@ -17,7 +17,9 @@ document.onreadystatechange = function(){
             targetContainerId: "gaugeContainer1",
             text: "50%<br/>Ahead", //Not yet used
             percentageDifference: 78,
-            threshold: 10
+            threshold: 10,
+            labelFont: 'Arial',
+            showValueAsLabel: 'true'
         });
 
         //Configuration for the chart
