@@ -13,6 +13,7 @@ TODO
 * setInterval to make value gradually fill up?
 * Apply tween to the setInterval above if it ever gets done
 * Zero value doesn't quite look right... might explain some other small issues when scaling different values
+* Only makes sense if height dimension of containing div is greater or equal to width otherwise we all fall down.
 */
 var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
