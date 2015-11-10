@@ -10,8 +10,10 @@ Currently the only functionality is to produce a gauge chart displaying distance
 * Add a div element which the svg should be rendered inside
 * Configure your chart as below
 
-### Example
+### JSFiddle
+<a href="http://jsfiddle.net/josephryanwynne/ddsohund/">View examples in JSFiddle</a>
 
+### Example
 <pre>
 &lt;html&gt;
 	&lt;body&gt;
