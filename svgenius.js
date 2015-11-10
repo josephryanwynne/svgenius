@@ -35,7 +35,7 @@ SVGENIUS.charts = {
         newSvgTextElement.setAttribute('font-size', textSize);
         newSvgTextElement.setAttribute('font-weight', 'bold');
         newSvgTextElement.setAttribute('fill', color);
-        newSvgTextElement.innerHTML = text;
+        newSvgTextElement.textContent = text;
         newSvgTextElement.setAttribute('font-family', 'Arial');
         return newSvgTextElement;
     },
@@ -83,7 +83,7 @@ SVGENIUS.charts = {
         var negativeTextPositionX = positiveTextPositionX;
         var negativeTextPositionY = outerArcBottom - (textSize / 2);
             
-        var negativeText = this.svgText(negativeTextPositionX, negativeTextPositionY, textSize, '&ndash;', 'red');
+        var negativeText = this.svgText(negativeTextPositionX, negativeTextPositionY, textSize, '-', 'red');
         var zeroText = this.svgText(halfwayX + gaugeWidth, halfwayY, textSize, '0', 'green');
         
         //TODO : CLEAN ME
@@ -98,7 +98,7 @@ SVGENIUS.charts = {
             majorLabel.setAttribute('font-size', radius / 3); //Arbitrary
             majorLabel.setAttribute('font-weight', 'bold');
             majorLabel.setAttribute('fill', 'black');
-            majorLabel.innerHTML = chartMajorText + '%';
+            majorLabel.textContent = chartMajorText + '%';
             majorLabel.setAttribute('font-family', 'Arial');
 
             var minorLabelText = percentageDifference >= 0 ? 'Ahead by' : 'Behind by';
@@ -108,7 +108,7 @@ SVGENIUS.charts = {
             minorLabel.setAttribute('fill', 'black');
             minorLabel.setAttribute('dy', '1.1em');
             minorLabel.setAttribute('x', startX);
-            minorLabel.innerHTML = minorLabelText;
+            minorLabel.textContent = minorLabelText;
             minorLabel.setAttribute('font-family', 'Arial');
             
             labelText.appendChild(majorLabel);
