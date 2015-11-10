@@ -12,6 +12,7 @@ TODO
 * Don't forget to remove logging once it's working ok
 * setInterval to make value gradually fill up?
 * Apply tween to the setInterval above if it ever gets done
+* Zero value doesn't quite look right... might explain some other small issues when scaling different values
 */
 var SVGENIUS = SVGENIUS || {};
 SVGENIUS.charts = {
@@ -29,7 +30,7 @@ SVGENIUS.charts = {
     },
     svgText: function(xPos,yPos,textSize,text,color){
         var newSvgTextElement = this.newSvgElement('text');
-        newSvgTextElement.setAttribute('dominant-baseline', 'middle');
+        newSvgTextElement.setAttribute('dominant-baseline', 'central');
         newSvgTextElement.setAttribute('x', xPos);
         newSvgTextElement.setAttribute('y', yPos);
         newSvgTextElement.setAttribute('font-size', textSize);
@@ -45,7 +46,7 @@ SVGENIUS.charts = {
         var gaugeContainer = document.getElementById(conf.targetContainerId);
         
         //This is probably not the right way to ascertain the dimensions as it only works for html attributes
-        var height = gaugeContainer.getAttribute("height"); 
+        var height = gaugeContainer.getAttribute("height");
         var width = gaugeContainer.getAttribute("width");
         var strokeWidth = 1; // TODO : Bug in my code means this cannot easily be changed.
         var svg = this.newSvg(height, width);
@@ -88,14 +89,14 @@ SVGENIUS.charts = {
         
         //TODO : CLEAN ME
         if(conf.showValueAsLabel == 'true'){
-            var chartMajorText = conf.percentageDifference;
+            var chartMajorText = conf.percentageDifference.toFixed(2);
             var labelText = this.newSvgElement('text');
             labelText.setAttribute('alignment-baseline', 'middle');
             labelText.setAttribute('text-anchor', 'middle');
             labelText.setAttribute('x', startX);
             labelText.setAttribute('y', halfwayY);
             var majorLabel = this.newSvgElement('tspan');
-            majorLabel.setAttribute('font-size', radius / 3); //Arbitrary
+            majorLabel.setAttribute('font-size', radius / 3.5); //Arbitrary
             majorLabel.setAttribute('font-weight', 'bold');
             majorLabel.setAttribute('fill', 'black');
             majorLabel.textContent = chartMajorText + '%';
@@ -115,8 +116,6 @@ SVGENIUS.charts = {
             labelText.appendChild(minorLabel);
             svg.appendChild(labelText);
         }
-        
-        
         
         //Prevent overflow if user passes numbers outside of accepted range
         if(percentageDifference > 100){
