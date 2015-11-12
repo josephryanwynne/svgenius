@@ -14,14 +14,30 @@ module.exports = function(grunt) {
     },
     jshint: {
         src: ['src/*.js']
+    },
+    jslint: {
+      // lint the source
+      src: {
+        // files to lint
+        src: [
+          'src/svgenius.js'
+            ]
+      }
+    },
+      jsbeautifier : {
+    files : ["src/**/*.js"],
+    options : {
     }
+}
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks("grunt-jsbeautifier");
 
-  // Default task(s).
-  grunt.registerTask('default', ['uglify']);
     
+  // Default task(s).
+  grunt.registerTask('default', ['uglify', 'jslint']);
 };
