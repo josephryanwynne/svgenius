@@ -160,4 +160,4 @@ SVGENIUS.charts = {
         svg.appendChild(negativeText);
         svg.appendChild(zeroText);
     }
-}
+};
