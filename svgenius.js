@@ -47,8 +47,8 @@ SVGENIUS.charts = {
         var gaugeContainer = document.getElementById(conf.targetContainerId);
         
         //This is probably not the right way to ascertain the dimensions as it only works for html attributes
-        var height = gaugeContainer.getAttribute("height");
-        var width = gaugeContainer.getAttribute("width");
+        var height = gaugeContainer.offsetHeight;
+        var width = gaugeContainer.offsetWidth;
         var strokeWidth = 1; // TODO : Bug in my code means this cannot easily be changed.
         var svg = this.newSvg(height, width);
         //Compute positions of various stuff based on the above
