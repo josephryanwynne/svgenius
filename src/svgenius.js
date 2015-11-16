@@ -82,6 +82,8 @@ var SVGENIUS = (function (my) {
                 majorLabel,
                 minorLabel,
                 minorLabelText,
+                chartMajorLabelFont = ((typeof(conf.majorLabelFont) !== 'undefined') && (conf.majorLabelFont !== null))?conf.majorLabelFont : 'Arial',
+                chartMinorLabelFont = ((typeof(conf.minorLabelFont) !== 'undefined') && (conf.minorLabelFont !== null))?conf.minorLabelFont : 'Arial',
                 halfwayMarker,
                 angle = Math.PI / (200 / percentageDifference),
                 outerArcYOffset = radius * Math.sin(angle),
@@ -119,8 +121,7 @@ var SVGENIUS = (function (my) {
                 majorLabel.setAttribute('font-weight', 'bold');
                 majorLabel.setAttribute('fill', 'black');
                 majorLabel.textContent = chartMajorText + '%';
-                majorLabel.setAttribute('font-family', 'Arial');
-
+                majorLabel.setAttribute('font-family', chartMajorLabelFont);
 
                 minorLabel.setAttribute('font-size', radius / 7); // Arbitrary
                 minorLabel.setAttribute('text-anchor', 'middle');
@@ -128,7 +129,7 @@ var SVGENIUS = (function (my) {
                 minorLabel.setAttribute('dy', '1.1em');
                 minorLabel.setAttribute('x', startX);
                 minorLabel.textContent = minorLabelText;
-                minorLabel.setAttribute('font-family', 'Arial');
+                minorLabel.setAttribute('font-family', chartMinorLabelFont);
 
                 labelText.appendChild(majorLabel);
                 labelText.appendChild(minorLabel);

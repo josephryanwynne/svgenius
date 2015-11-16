@@ -3,8 +3,8 @@
 <body>
     <style type="text/css">svg{background:#eeeeee;}</style>
 <div id="gaugeContainer1" style="height: 200px; width: 200px;"></div>
-<div id="gaugeContainer2" style="height: 200px; width: 200px;" height="400" width="400"></div>
-<div id="gaugeContainer3" height="600" width="600"></div>
+<div id="gaugeContainer2" style="height: 400px; width: 400px;"></div>
+<div id="gaugeContainer3" style="height: 600px; width: 600px;"></div>
     
 <script type="text/javascript" src="../src/svgenius.js" ></script>
 <script type="text/javascript">
@@ -18,7 +18,8 @@ document.onreadystatechange = function(){
             text: "50%<br/>Ahead", //Not yet used
             percentageDifference: 78,
             threshold: 10,
-            labelFont: 'Arial',
+            majorLabelFont: 'Times New Roman',
+            minorLabelFont: 'Times New Roman',
             showValueAsLabel: true
         });
 
