@@ -25,8 +25,17 @@ Currently the only functionality is to produce a gauge chart displaying distance
 		            targetContainerId: "sampleGaugeContainer", // id of containing div
 		            percentageDifference: 78, // Percentage above or below target
 		            threshold: 10 // Values above the threshold will cause the gauge to be rendered in red
+		            height: 200, //May be required if the dimensions of containing div cannot be determined
+			        width: 200, //May be required if the dimensions of containing div cannot be determined
+			        majorLabelStyle: 'font-family: "Times New Roman"; font-size: 28px;', // Optional style
+			        minorLabelStyle: 'font-family: "Times New Roman"; font-size: 14px;', // Optional style
+			        showValueAsLabel: true // Display the value and ahead/behind. Default is false
 		        });
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
 </pre>
+
+## Browser Support
+Verified in IE9+, Chrome 46, Firefox 42, Safari 9.
+IE8 and below are not supported.
