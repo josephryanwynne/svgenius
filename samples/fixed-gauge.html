@@ -15,25 +15,24 @@ document.onreadystatechange = function(){
         //Configuration for the chart
         SVGENIUS.charts.gauge({
             targetContainerId: "gaugeContainer1",
-            text: "50%<br/>Ahead", //Not yet used
             percentageDifference: 78,
             threshold: 10,
-            majorLabelFont: 'Times New Roman',
-            minorLabelFont: 'Times New Roman',
+            height: 200,
+            width: 200,
+            majorLabelStyle: 'font-family: "Times New Roman"; font-size: 28px;',
+            minorLabelStyle: 'font-family: "Times New Roman"; font-size: 14px;',
             showValueAsLabel: true
         });
 
         //Configuration for the chart
         SVGENIUS.charts.gauge({
             targetContainerId: "gaugeContainer2",
-            text: "50%<br/>Ahead", //Not yet used
             percentageDifference: -10,
             threshold: 10
         });
 
         SVGENIUS.charts.gauge({
             targetContainerId: "gaugeContainer3",
-            text: "50%<br/>Ahead", //Not yet used
             percentageDifference: -60,
             threshold: 10
         });

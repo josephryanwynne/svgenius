@@ -1,0 +1,49 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Jasmine Spec Runner v2.0.0</title>
+
+    <link rel="shortcut icon" type="image/png" href="lib/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="lib/jasmine.css">
+
+    <script type="text/javascript" src="lib/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/boot.js"></script>
+
+    <script type="text/javascript" src="lib/console.js"></script>
+    <script type="text/javascript">
+        if (typeof window.callPhantom === "function") {
+            window.callPhantom("parse time");
+        }
+    </script>
+<!-- 
+    <script type="text/javascript" src="../vendor/jquery-2.1.4.min.js"></script>
+
+    include source files here... -->
+    <script type="text/javascript" src="../src/svgenius.js"></script>
+
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="specs/gauge.specs.js"></script>
+
+    <style type="text/css">
+    .gauge {
+        display: inline-block;
+
+    }
+    </style>
+
+</head>
+
+<body>
+    <div style="float: left; margin-top: 200px;">
+    <div class="gauge" id="sampleGaugeContainerAtMax" style="height: 200px; width: 200px;"> </div>
+    <div class="gauge" id="sampleGaugeContainerOverThreshold" style="height: 200px; width: 200px;"> </div>
+    <div class="gauge" id="sampleGaugeContainerBelowThreshold" style="height: 200px; width: 200px;"> </div>
+    <div class="gauge" id="sampleGaugeContainerAtZero" style="height: 200px; width: 200px;"> </div>
+    <div class="gauge" id="sampleGaugeContainerBelowZero" style="height: 200px; width: 200px;"> </div>
+    <div class="gauge" id="sampleGaugeContainerBelowNegativeThreshold" style="height: 200px; width: 200px;"> </div>
+</div>
+</body>
+</html>

@@ -49,9 +49,9 @@ var SVGENIUS = (function (my) {
             var percentageDifference = conf.percentageDifference > 100 ? 100 : (conf.percentageDifference < -100 ? -100 : conf.percentageDifference),
                 gaugeContainer = document.getElementById(conf.targetContainerId),
 
-                //This is probably not the right way to ascertain the dimensions as it only works for html attributes
-                height = gaugeContainer.offsetHeight,
-                width = gaugeContainer.offsetWidth,
+                //Tries to determine the heigh of the container if the height and width are not configured...
+                height = ((typeof(conf.height) !== 'undefined') && (conf.height !== null))?conf.height : gaugeContainer.offsetHeight,
+                width = ((typeof(conf.width) !== 'undefined') && (conf.width !== null))?conf.width : gaugeContainer.offsetWidth,
                 strokeWidth = 1, // I think a bug in my code means this cannot easily be changed.
                 svg = this.newSvg(height, width),
                 //Compute positions of various stuff based on the above
@@ -82,8 +82,8 @@ var SVGENIUS = (function (my) {
                 majorLabel,
                 minorLabel,
                 minorLabelText,
-                chartMajorLabelFont = ((typeof(conf.majorLabelFont) !== 'undefined') && (conf.majorLabelFont !== null))?conf.majorLabelFont : 'Arial',
-                chartMinorLabelFont = ((typeof(conf.minorLabelFont) !== 'undefined') && (conf.minorLabelFont !== null))?conf.minorLabelFont : 'Arial',
+                chartMajorLabelStyle = ((typeof(conf.majorLabelStyle) !== 'undefined') && (conf.majorLabelStyle !== null))?conf.majorLabelStyle : 'font-size: ' + (radius / 3.5) + 'px; color: black; font-family: arial;',
+                chartMinorLabelStyle = ((typeof(conf.minorLabelStyle) !== 'undefined') && (conf.minorLabelStyle !== null))?conf.minorLabelStyle : 'font-size: ' + (radius / 7) + 'px; color: black; font-family: arial;',
                 halfwayMarker,
                 angle = Math.PI / (200 / percentageDifference),
                 outerArcYOffset = radius * Math.sin(angle),
@@ -117,26 +117,17 @@ var SVGENIUS = (function (my) {
                 labelText.setAttribute('x', startX);
                 labelText.setAttribute('y', halfwayY);
 
-                majorLabel.setAttribute('font-size', radius / 3.5); //Arbitrary
-                majorLabel.setAttribute('font-weight', 'bold');
-                majorLabel.setAttribute('fill', 'black');
                 majorLabel.textContent = chartMajorText + '%';
-                majorLabel.setAttribute('font-family', chartMajorLabelFont);
-
-                minorLabel.setAttribute('font-size', radius / 7); // Arbitrary
-                minorLabel.setAttribute('text-anchor', 'middle');
-                minorLabel.setAttribute('fill', 'black');
+                majorLabel.setAttribute('style', chartMajorLabelStyle);
+                minorLabel.setAttribute('style', chartMinorLabelStyle);
                 minorLabel.setAttribute('dy', '1.1em');
                 minorLabel.setAttribute('x', startX);
                 minorLabel.textContent = minorLabelText;
-                minorLabel.setAttribute('font-family', chartMinorLabelFont);
 
                 labelText.appendChild(majorLabel);
                 labelText.appendChild(minorLabel);
                 svg.appendChild(labelText);
             }
-
-
 
             halfwayMarker = this.newSvgElement("path");
             halfwayMarker.setAttribute('d', 'M' + halfwayPoint + ' h' + (gaugeWidth / 2) + ' M' + halfwayPoint + ' h-' + gaugeWidth + ' Z');
