@@ -119,6 +119,8 @@ var SVGENIUS = (function (my) {
             majorLabel.textContent = majorLabelText;
             majorLabel.setAttribute('style', chartMajorLabelStyle);
             minorLabel.setAttribute('style', chartMinorLabelStyle);
+            majorLabel.setAttribute('class', "gaugeMajorLabel");
+            minorLabel.setAttribute('class', "gaugeMinorLabel");
             minorLabel.setAttribute('dy', '1.1em');
             minorLabel.setAttribute('x', startX);
             minorLabel.textContent = minorLabelText;
