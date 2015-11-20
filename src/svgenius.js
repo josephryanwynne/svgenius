@@ -7,9 +7,8 @@ SVGENIUS. The beginning of something beautiful...
 Coming up...
 ============
 
-* Add labels: Chart Title, Chart Major, Chart Minor. Title is least important.
+* Labels should accept a class instead of having a hard coded class
 * Changing the stroke width screws up the layout
-* Don't forget to remove logging once it's working ok
 * setInterval to make value gradually fill up?
 * Apply tween to the setInterval above if it ever gets done
 * Zero value doesn't quite look right... might explain some other small issues when scaling different values
