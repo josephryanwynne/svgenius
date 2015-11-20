@@ -134,6 +134,8 @@ var SVGENIUS = (function (my) {
             halfwayMarker.setAttribute('stroke', 'grey');
             halfwayMarker.setAttribute('stroke-width', '1');
 
+            //TODO: Suspect that the calculations used in here to determine where to draw the coloured section are not correct. Doesn't look particularly significant but still not good.
+            // Extracting some of the logic and creating a Jasmine test is probably the best way to go about debugging and maintaining correctness going forward.
             overlay.setAttribute('d', 'M' + halfwayPoint + ' l-' + gaugeWidth + ',0 A' + innerRadius + ',' + innerRadius + ' 0 0 ' + innerArcFlag + ' ' + (startX + innerArcXOffset) + ',' + (radius - innerArcYOffset + correction) + '  L' + (startX + outerArcXOffset) + ',' + (radius - outerArcYOffset + correction) + ' A' + radius + ',' + radius + ' 0 0 ' + outerArcFlag + ' ' + halfwayPoint);
             overlay.setAttribute('fill', (Math.abs(percentageDifference) > conf.threshold ? 'red' : 'green'));
             overlay.setAttribute('stroke-width', '0');
