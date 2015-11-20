@@ -33,9 +33,9 @@ var SVGENIUS = (function (my) {
         },
         svgText: function (xPos, yPos, textSize, text, color) {
             var newSvgTextElement = this.newSvgElement('text');
-            newSvgTextElement.setAttribute('dominant-baseline', 'central');
             newSvgTextElement.setAttribute('x', xPos);
             newSvgTextElement.setAttribute('y', yPos);
+            newSvgTextElement.setAttribute('dy', '0.35em'); // Thank you IE for not supporting baseline properties in SVG
             newSvgTextElement.setAttribute('font-size', textSize);
             newSvgTextElement.setAttribute('font-weight', 'bold');
             newSvgTextElement.setAttribute('fill', color);
@@ -79,9 +79,10 @@ var SVGENIUS = (function (my) {
                 base = this.newSvgElement("path"),
                 chartMajorText,
                 labelText,
+                majorLabelText = ((typeof(conf.majorLabelText) !== 'undefined') && (conf.majorLabelText !== null))?conf.majorLabelText:'',
                 majorLabel,
                 minorLabel,
-                minorLabelText,
+                minorLabelText = ((typeof(conf.minorLabelText) !== 'undefined') && (conf.minorLabelText !== null))?conf.minorLabelText:'',
                 chartMajorLabelStyle = ((typeof(conf.majorLabelStyle) !== 'undefined') && (conf.majorLabelStyle !== null))?conf.majorLabelStyle : 'font-size: ' + (radius / 3.5) + 'px; color: black; font-family: arial;',
                 chartMinorLabelStyle = ((typeof(conf.minorLabelStyle) !== 'undefined') && (conf.minorLabelStyle !== null))?conf.minorLabelStyle : 'font-size: ' + (radius / 7) + 'px; color: black; font-family: arial;',
                 halfwayMarker,
@@ -104,30 +105,27 @@ var SVGENIUS = (function (my) {
             //Separate layer for base and outline so colors can be manipulated appropriately
             base.setAttribute('d', basePath);
             base.setAttribute('fill', 'white');
+
             //This section needs some attention
-            if (conf.showValueAsLabel === true) {
-                chartMajorText = conf.percentageDifference.toFixed(2);
-                labelText = this.newSvgElement('text');
-                majorLabel = this.newSvgElement('tspan');
-                minorLabelText = percentageDifference >= 0 ? 'Ahead by' : 'Behind by';
-                minorLabel = this.newSvgElement('tspan');
+            labelText = this.newSvgElement('text');
+            majorLabel = this.newSvgElement('tspan');
+            minorLabel = this.newSvgElement('tspan');
 
-                labelText.setAttribute('alignment-baseline', 'middle');
-                labelText.setAttribute('text-anchor', 'middle');
-                labelText.setAttribute('x', startX);
-                labelText.setAttribute('y', halfwayY);
+            labelText.setAttribute('alignment-baseline', 'middle');
+            labelText.setAttribute('text-anchor', 'middle');
+            labelText.setAttribute('x', startX);
+            labelText.setAttribute('y', halfwayY);
 
-                majorLabel.textContent = chartMajorText + '%';
-                majorLabel.setAttribute('style', chartMajorLabelStyle);
-                minorLabel.setAttribute('style', chartMinorLabelStyle);
-                minorLabel.setAttribute('dy', '1.1em');
-                minorLabel.setAttribute('x', startX);
-                minorLabel.textContent = minorLabelText;
+            majorLabel.textContent = majorLabelText;
+            majorLabel.setAttribute('style', chartMajorLabelStyle);
+            minorLabel.setAttribute('style', chartMinorLabelStyle);
+            minorLabel.setAttribute('dy', '1.1em');
+            minorLabel.setAttribute('x', startX);
+            minorLabel.textContent = minorLabelText;
 
-                labelText.appendChild(majorLabel);
-                labelText.appendChild(minorLabel);
+            labelText.appendChild(majorLabel);
+            labelText.appendChild(minorLabel);
                 svg.appendChild(labelText);
-            }
 
             halfwayMarker = this.newSvgElement("path");
             halfwayMarker.setAttribute('d', 'M' + halfwayPoint + ' h' + (gaugeWidth / 2) + ' M' + halfwayPoint + ' h-' + gaugeWidth + ' Z');

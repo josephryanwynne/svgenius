@@ -15,13 +15,14 @@ document.onreadystatechange = function(){
         //Configuration for the chart
         SVGENIUS.charts.gauge({
             targetContainerId: "gaugeContainer1",
-            percentageDifference: 78,
+            percentageDifference: -78,
             threshold: 10,
             height: 200,
             width: 200,
             majorLabelStyle: 'font-family: "Times New Roman"; font-size: 28px;',
             minorLabelStyle: 'font-family: "Times New Roman"; font-size: 14px;',
-            showValueAsLabel: true
+            majorLabelText: "78.00%",
+            minorLabelText: "Behind by"
         });
 
         //Configuration for the chart
